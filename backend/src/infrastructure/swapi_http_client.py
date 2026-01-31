@@ -27,21 +27,16 @@ class SwapiHttpClient(SwapiClient):
         return response.json()
 
     async def get_characters(self, filters: SearchFilters) -> dict[str, Any]:
-        """Fetch characters from SWAPI /people endpoint"""
         return await self._fetch("/people/", filters)
 
     async def get_planets(self, filters: SearchFilters) -> dict[str, Any]:
-        """Fetch planets from SWAPI /planets endpoint"""
         return await self._fetch("/planets/", filters)
 
     async def get_films(self, filters: SearchFilters) -> dict[str, Any]:
-        """Fetch films from SWAPI /films endpoint"""
         return await self._fetch("/films/", filters)
 
     async def get_starships(self, filters: SearchFilters) -> dict[str, Any]:
-        """Fetch starships from SWAPI /starships endpoint"""
         return await self._fetch("/starships/", filters)
 
     async def close(self):
-        """Close httpx client connection"""
         await self.client.aclose()
