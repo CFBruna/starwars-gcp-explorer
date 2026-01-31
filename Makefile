@@ -13,7 +13,7 @@ help:
 	@echo "  make clean        - Remove generated files"
 
 dev:
-	cd backend && ~/.local/bin/uv run uvicorn src.main:app --reload --host 0.0.0.0 --port 8000
+	cd backend && ~/.local/bin/uv run uvicorn main:app --reload --host 0.0.0.0 --port 8000
 
 test:
 	cd backend && ~/.local/bin/uv run pytest --cov --cov-report=term-missing
