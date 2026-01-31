@@ -38,4 +38,3 @@ def root() -> JSONResponse:
             "docs": f"{settings.API_PREFIX}/docs",
         }
     )
-
