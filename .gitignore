@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+ENV/
+env/
+.uv/
+*.egg-info/
+dist/
+build/
+
+# FastAPI
+.pytest_cache/
+htmlcov/
+.coverage
+*.db
+
+# Node/React
+node_modules/
+.expo/
+.expo-shared/
+dist/
+*.log
+.DS_Store
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Docker
+*.pid
+*.seed
+*.log
