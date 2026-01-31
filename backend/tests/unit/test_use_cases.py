@@ -1,5 +1,4 @@
 import pytest
-from unittest.mock import AsyncMock, MagicMock
 
 from application.ports.swapi_client import SwapiClient
 from application.use_cases.get_characters import GetCharacters

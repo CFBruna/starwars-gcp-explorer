@@ -1,5 +1,3 @@
-import pytest
-
 from domain.entities.character import Character
 from domain.entities.film import Film
 from domain.entities.planet import Planet
