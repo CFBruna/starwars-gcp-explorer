@@ -1,4 +1,4 @@
-from typing import List
+from typing import Any
 
 from application.ports.swapi_client import SwapiClient
 from domain.entities.character import Character
@@ -11,7 +11,7 @@ class GetCharacters:
     def __init__(self, swapi_client: SwapiClient):
         self.swapi_client = swapi_client
 
-    async def execute(self, filters: SearchFilters) -> dict:
+    async def execute(self, filters: SearchFilters) -> dict[str, Any]:
         """
         Execute use case to get characters from SWAPI
 

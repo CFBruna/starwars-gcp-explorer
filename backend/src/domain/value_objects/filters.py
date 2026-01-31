@@ -1,13 +1,13 @@
 from dataclasses import dataclass
-from typing import Optional
+from typing import Any
 
 
 @dataclass
 class SearchFilters:
-    search: Optional[str] = None
+    search: str | None = None
     page: int = 1
 
-    def to_query_params(self) -> dict:
+    def to_query_params(self) -> dict[str, Any]:
         params = {"page": self.page}
         if self.search:
             params["search"] = self.search

@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Any
 
 
 @dataclass
@@ -15,7 +16,7 @@ class Planet:
     url: str
 
     @classmethod
-    def from_swapi(cls, data: dict) -> "Planet":
+    def from_swapi(cls, data: dict[str, Any]) -> "Planet":
         return cls(
             name=data["name"],
             rotation_period=data["rotation_period"],
