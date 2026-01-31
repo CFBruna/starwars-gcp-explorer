@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Any
 
 
 @dataclass
@@ -12,7 +13,7 @@ class Film:
     url: str
 
     @classmethod
-    def from_swapi(cls, data: dict) -> "Film":
+    def from_swapi(cls, data: dict[str, Any]) -> "Film":
         return cls(
             title=data["title"],
             episode_id=data["episode_id"],

@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Any
 
 
 @dataclass
@@ -15,7 +16,7 @@ class Character:
     url: str
 
     @classmethod
-    def from_swapi(cls, data: dict) -> "Character":
+    def from_swapi(cls, data: dict[str, Any]) -> "Character":
         return cls(
             name=data["name"],
             height=data["height"],

@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Any
 
 
 @dataclass
@@ -18,7 +19,7 @@ class Starship:
     url: str
 
     @classmethod
-    def from_swapi(cls, data: dict) -> "Starship":
+    def from_swapi(cls, data: dict[str, Any]) -> "Starship":
         return cls(
             name=data["name"],
             model=data["model"],
