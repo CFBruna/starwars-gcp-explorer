@@ -12,4 +12,3 @@ class SearchFilters:
         if self.search:
             params["search"] = self.search
         return params
-
