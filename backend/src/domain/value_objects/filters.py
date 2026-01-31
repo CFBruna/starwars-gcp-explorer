@@ -8,7 +8,8 @@ class SearchFilters:
     page: int = 1
 
     def to_query_params(self) -> dict[str, Any]:
-        params = {"page": self.page}
+        params: dict[str, Any] = {"page": self.page}
         if self.search:
             params["search"] = self.search
         return params
+
