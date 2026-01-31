@@ -37,7 +37,7 @@ class LRUCache:
         self.access_order.append(key)
         return entry.value
 
-    def set(self, key: str, value: Any, ttl: int | None = None):
+    def set(self, key: str, value: Any, ttl: int | None = None) -> None:
         if key in self.cache:
             self.access_order.remove(key)
 
@@ -49,13 +49,13 @@ class LRUCache:
         self.cache[key] = CacheEntry(value, ttl_seconds)
         self.access_order.append(key)
 
-    def _evict(self, key: str):
+    def _evict(self, key: str) -> None:
         if key in self.cache:
             del self.cache[key]
         if key in self.access_order:
             self.access_order.remove(key)
 
-    def clear(self):
+    def clear(self) -> None:
         self.cache.clear()
         self.access_order.clear()
 
@@ -63,12 +63,12 @@ class LRUCache:
 _cache = LRUCache(max_size=128, default_ttl=3600)
 
 
-def cached(ttl: int | None = None):
+def cached(ttl: int | None = None):  # type: ignore[no-untyped-def]
     """Decorator to cache async function results"""
 
-    def decorator(func: Callable):
+    def decorator(func: Callable) -> Callable:  # type: ignore[type-arg]
         @wraps(func)
-        async def wrapper(*args, **kwargs):
+        async def wrapper(*args: Any, **kwargs: Any) -> Any:
             cache_key = f"{func.__name__}:{str(args)}:{str(kwargs)}"
 
             cached_value = _cache.get(cache_key)
@@ -84,6 +84,6 @@ def cached(ttl: int | None = None):
     return decorator
 
 
-def clear_cache():
+def clear_cache() -> None:
     """Clear all cache entries (useful for testing)"""
     _cache.clear()

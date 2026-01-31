@@ -12,7 +12,7 @@ class SwapiHttpClient(SwapiClient):
     BASE_URL = "https://swapi.dev/api"
     TIMEOUT = 10.0
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.client = httpx.AsyncClient(
             base_url=self.BASE_URL,
             timeout=self.TIMEOUT,
@@ -24,7 +24,7 @@ class SwapiHttpClient(SwapiClient):
         params = filters.to_query_params()
         response = await self.client.get(endpoint, params=params)
         response.raise_for_status()
-        return response.json()
+        return response.json()  # type: ignore[no-any-return]
 
     async def get_characters(self, filters: SearchFilters) -> dict[str, Any]:
         return await self._fetch("/people/", filters)
@@ -38,5 +38,5 @@ class SwapiHttpClient(SwapiClient):
     async def get_starships(self, filters: SearchFilters) -> dict[str, Any]:
         return await self._fetch("/starships/", filters)
 
-    async def close(self):
+    async def close(self) -> None:
         await self.client.aclose()
