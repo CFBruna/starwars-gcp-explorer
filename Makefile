@@ -1,0 +1,41 @@
+.PHONY: help dev test lint format docker-build docker-run clean
+
+help:
+	@echo "Star Wars API - Development Commands"
+	@echo ""
+	@echo "  make dev          - Run backend with hot reload"
+	@echo "  make test         - Run all tests with coverage"
+	@echo "  make lint         - Run ruff linter"
+	@echo "  make format       - Format code with ruff"
+	@echo "  make typecheck    - Run mypy type checking"
+	@echo "  make docker-build - Build Docker image"
+	@echo "  make docker-run   - Run Docker container locally"
+	@echo "  make clean        - Remove generated files"
+
+dev:
+	cd backend && ~/.local/bin/uv run uvicorn src.main:app --reload --host 0.0.0.0 --port 8000
+
+test:
+	cd backend && ~/.local/bin/uv run pytest --cov --cov-report=term-missing
+
+lint:
+	cd backend && ~/.local/bin/uv run ruff check .
+
+format:
+	cd backend && ~/.local/bin/uv run ruff format .
+
+typecheck:
+	cd backend && ~/.local/bin/uv run mypy src/
+
+docker-build:
+	docker build -t starwars-api:latest .
+
+docker-run:
+	docker run -p 8080:8080 -e API_KEY=dev-key starwars-api:latest
+
+clean:
+	find . -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true
+	find . -type d -name ".pytest_cache" -exec rm -rf {} + 2>/dev/null || true
+	find . -type d -name "htmlcov" -exec rm -rf {} + 2>/dev/null || true
+	find . -type f -name ".coverage" -delete 2>/dev/null || true
+	find . -type f -name "*.pyc" -delete 2>/dev/null || true
