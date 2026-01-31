@@ -1,8 +1,8 @@
 from typing import Any
 
-from application.ports.swapi_client import SwapiClient
-from domain.entities.starship import Starship
-from domain.value_objects.filters import SearchFilters
+from src.application.ports.swapi_client import SwapiClient
+from src.domain.entities.starship import Starship
+from src.domain.value_objects.filters import SearchFilters
 
 
 class GetStarships:

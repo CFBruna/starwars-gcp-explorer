@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Any
 
-from domain.value_objects.filters import SearchFilters
+from src.domain.value_objects.filters import SearchFilters
 
 
 class SwapiClient(ABC):

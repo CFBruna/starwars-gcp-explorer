@@ -1,4 +1,4 @@
-from infrastructure.swapi_http_client import SwapiHttpClient
+from src.infrastructure.swapi_http_client import SwapiHttpClient
 
 
 def get_swapi_client() -> SwapiHttpClient:

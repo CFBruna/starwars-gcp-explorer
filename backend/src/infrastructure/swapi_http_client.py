@@ -2,8 +2,8 @@ from typing import Any
 
 import httpx
 
-from application.ports.swapi_client import SwapiClient
-from domain.value_objects.filters import SearchFilters
+from src.application.ports.swapi_client import SwapiClient
+from src.domain.value_objects.filters import SearchFilters
 
 
 class SwapiHttpClient(SwapiClient):
