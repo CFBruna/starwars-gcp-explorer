@@ -1,8 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from slowapi import _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
 
-from core.config import settings
+from src.api.middleware.rate_limit import limiter
+from src.api.routes import characters, films, planets, starships
+from src.core.config import settings
 
 app = FastAPI(
     title="Star Wars API Platform",
@@ -20,6 +24,14 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
+app.include_router(characters.router, prefix=settings.API_PREFIX)
+app.include_router(planets.router, prefix=settings.API_PREFIX)
+app.include_router(films.router, prefix=settings.API_PREFIX)
+app.include_router(starships.router, prefix=settings.API_PREFIX)
 
 
 @app.get("/health")

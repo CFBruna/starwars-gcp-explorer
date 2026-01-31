@@ -1,8 +1,8 @@
 from typing import Any
 
-from application.ports.swapi_client import SwapiClient
-from domain.entities.character import Character
-from domain.value_objects.filters import SearchFilters
+from src.application.ports.swapi_client import SwapiClient
+from src.domain.entities.character import Character
+from src.domain.value_objects.filters import SearchFilters
 
 
 class GetCharacters:

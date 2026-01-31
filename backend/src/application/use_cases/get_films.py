@@ -1,8 +1,8 @@
 from typing import Any
 
-from application.ports.swapi_client import SwapiClient
-from domain.entities.film import Film
-from domain.value_objects.filters import SearchFilters
+from src.application.ports.swapi_client import SwapiClient
+from src.domain.entities.film import Film
+from src.domain.value_objects.filters import SearchFilters
 
 
 class GetFilms:

@@ -1,11 +1,11 @@
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, Request
 
-from api.dependencies import get_swapi_client
-from api.middleware.auth import verify_api_key
-from api.middleware.rate_limit import limiter
-from application.use_cases.get_characters import GetCharacters
-from domain.value_objects.filters import SearchFilters
-from infrastructure.swapi_http_client import SwapiHttpClient
+from src.api.dependencies import get_swapi_client
+from src.api.middleware.auth import verify_api_key
+from src.api.middleware.rate_limit import limiter
+from src.application.use_cases.get_characters import GetCharacters
+from src.domain.value_objects.filters import SearchFilters
+from src.infrastructure.swapi_http_client import SwapiHttpClient
 
 router = APIRouter(prefix="/people", tags=["characters"])
 
@@ -13,6 +13,7 @@ router = APIRouter(prefix="/people", tags=["characters"])
 @router.get("")
 @limiter.limit("100/minute")
 async def get_characters(
+    request: Request,
     search: str | None = Query(None, description="Search characters by name"),
     page: int = Query(1, ge=1, description="Page number"),
     client: SwapiHttpClient = Depends(get_swapi_client),
