@@ -1,0 +1,9 @@
+{
+    "name": "starwars-frontend",
+    "version": "1.0.0",
+    "private": true,
+    "scripts": {
+        "dev": "echo 'Frontend not initialized yet'",
+        "build": "mkdir -p dist && echo '<!DOCTYPE html><html><body><h1>Frontend Coming Soon</h1></body></html>' > dist/index.html"
+    }
+}
