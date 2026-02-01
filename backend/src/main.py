@@ -26,7 +26,7 @@ app.add_middleware(
 )
 
 app.state.limiter = limiter
-app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)  # type: ignore[arg-type]
 
 app.include_router(characters.router, prefix=settings.API_PREFIX)
 app.include_router(planets.router, prefix=settings.API_PREFIX)

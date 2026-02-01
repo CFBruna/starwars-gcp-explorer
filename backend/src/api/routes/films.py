@@ -1,3 +1,5 @@
+from typing import Any
+
 from fastapi import APIRouter, Depends, Query, Request
 
 from src.api.dependencies import get_swapi_client
@@ -17,7 +19,7 @@ async def get_films(
     page: int = Query(1, ge=1, description="Page number"),
     client: SwapiHttpClient = Depends(get_swapi_client),
     _: None = Depends(verify_api_key),
-):
+) -> Any:
     """Get Star Wars films"""
     filters = SearchFilters(page=page)
     use_case = GetFilms(client)
