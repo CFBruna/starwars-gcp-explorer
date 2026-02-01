@@ -63,13 +63,18 @@ class LRUCache:
 _cache = LRUCache(max_size=128, default_ttl=3600)
 
 
-def cached(ttl: int | None = None):  # type: ignore[no-untyped-def]
+def cached(ttl: int | None = None) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
     """Decorator to cache async function results"""
 
-    def decorator(func: Callable) -> Callable:  # type: ignore[type-arg]
+    def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
         @wraps(func)
         async def wrapper(*args: Any, **kwargs: Any) -> Any:
-            cache_key = f"{func.__name__}:{str(args)}:{str(kwargs)}"
+            # Skip 'self' for instance methods by checking if first arg has the function
+            cache_args = args
+            if args and hasattr(args[0], func.__name__):
+                cache_args = args[1:]
+            
+            cache_key = f"{func.__name__}:{str(cache_args)}:{str(kwargs)}"
 
             cached_value = _cache.get(cache_key)
             if cached_value is not None:
