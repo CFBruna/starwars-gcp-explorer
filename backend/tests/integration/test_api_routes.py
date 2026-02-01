@@ -36,9 +36,7 @@ class TestCharactersEndpoint:
         assert len(data["results"]) > 0
 
     def test_get_characters_with_search_filter(self):
-        response = client.get(
-            "/api/v1/people?search=Luke", headers={"X-API-Key": API_KEY}
-        )
+        response = client.get("/api/v1/people?search=Luke", headers={"X-API-Key": API_KEY})
         assert response.status_code == 200
         data = response.json()
         assert data["count"] > 0
@@ -58,9 +56,7 @@ class TestPlanetsEndpoint:
         assert "results" in data
 
     def test_get_planets_with_search_filter(self):
-        response = client.get(
-            "/api/v1/planets?search=Tatooine", headers={"X-API-Key": API_KEY}
-        )
+        response = client.get("/api/v1/planets?search=Tatooine", headers={"X-API-Key": API_KEY})
         assert response.status_code == 200
 
 
@@ -82,7 +78,5 @@ class TestStarshipsEndpoint:
         assert "results" in data
 
     def test_get_starships_with_search_filter(self):
-        response = client.get(
-            "/api/v1/starships?search=X-wing", headers={"X-API-Key": API_KEY}
-        )
+        response = client.get("/api/v1/starships?search=X-wing", headers={"X-API-Key": API_KEY})
         assert response.status_code == 200
