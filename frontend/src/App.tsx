@@ -70,117 +70,151 @@ function App() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
-      {/* Header */}
-      <header className="bg-gray-800 border-b border-gray-700 shadow-lg">
-        <div className="container mx-auto px-4 py-6">
-          <h1 className="text-4xl font-bold text-center">
-            <span className="text-yellow-500">Star Wars</span>
-            <span className="text-white"> Explorer</span>
-          </h1>
-          <p className="text-center text-gray-400 mt-2">Explore the Galaxy Far, Far Away</p>
-        </div>
-      </header>
+    <div className="min-h-screen bg-[#0A0E27] text-white relative overflow-hidden">
+      {/* Star field background */}
+      <div className="star-field"></div>
 
-      {/* Tabs */}
-      <nav className="bg-gray-800 border-b border-gray-700">
-        <div className="container mx-auto px-4">
-          <div className="flex space-x-1">
-            {tabs.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => {
-                  setActiveTab(tab.id);
-                  setSearchQuery('');
-                }}
-                className={`px-6 py-4 font-semibold transition-all ${activeTab === tab.id
-                    ? 'bg-gray-900 text-yellow-500 border-b-2 border-yellow-500'
-                    : 'text-gray-400 hover:text-white hover:bg-gray-700'
-                  }`}
-              >
-                {tab.label}
-                {tab.count > 0 && (
-                  <span className="ml-2 text-xs bg-gray-700 px-2 py-1 rounded-full">
-                    {tab.count}
-                  </span>
-                )}
-              </button>
-            ))}
+      {/* Content wrapper with z-index */}
+      <div className="relative z-10">
+        {/* Header with gradient */}
+        <header className="bg-gradient-to-b from-gray-900/95 to-gray-800/95 border-b border-gray-700/50 shadow-2xl backdrop-blur-sm">
+          <div className="container mx-auto px-4 py-8">
+            <h1 className="text-5xl font-bold text-center mb-2">
+              <span className="text-[#FFE81F] text-glow-sm">Star Wars</span>
+              <span className="text-white ml-3">Explorer</span>
+            </h1>
+            <p className="text-center text-gray-300 text-sm tracking-wider">
+              EXPLORE THE GALAXY FAR, FAR AWAY
+            </p>
+            <div className="crawl-divider mt-4 mx-auto max-w-md"></div>
           </div>
-        </div>
-      </nav>
+        </header>
 
-      {/* Main Content */}
-      <main className="container mx-auto px-4 py-8">
-        {/* Search Bar (hidden for films) */}
-        {activeTab !== 'films' && (
-          <SearchBar
-            value={searchQuery}
-            onChange={setSearchQuery}
-            placeholder={`Search ${tabs.find(t => t.id === activeTab)?.label.toLowerCase()}...`}
-          />
-        )}
-
-        {/* Loading State */}
-        {loading && <Loader />}
-
-        {/* Error State */}
-        {error && !loading && (
-          <div className="text-center py-12">
-            <p className="text-red-500 text-lg">❌ {error}</p>
-            <button
-              onClick={fetchData}
-              className="mt-4 px-6 py-2 bg-yellow-500 text-gray-900 font-semibold rounded hover:bg-yellow-400 transition-colors"
-            >
-              Try Again
-            </button>
+        {/* Tabs with improved styling */}
+        <nav className="bg-gray-900/90 border-b border-gray-700/50 backdrop-blur-sm">
+          <div className="container mx-auto px-4">
+            <div className="flex space-x-1 overflow-x-auto">
+              {tabs.map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => {
+                    setActiveTab(tab.id);
+                    setSearchQuery('');
+                  }}
+                  className={`px-8 py-4 font-semibold transition-all duration-300 whitespace-nowrap relative ${activeTab === tab.id
+                      ? 'bg-gray-800/80 text-[#FFE81F]'
+                      : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+                    }`}
+                >
+                  {tab.label}
+                  {tab.count > 0 && (
+                    <span className={`ml-2 text-xs px-2 py-1 rounded-full ${activeTab === tab.id
+                        ? 'bg-[#FFE81F]/20 text-[#FFE81F]'
+                        : 'bg-gray-700/50 text-gray-400'
+                      }`}>
+                      {tab.count}
+                    </span>
+                  )}
+                  {activeTab === tab.id && (
+                    <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-[#FFE81F] to-transparent"></div>
+                  )}
+                </button>
+              ))}
+            </div>
           </div>
-        )}
+        </nav>
 
-        {/* Content Grid */}
-        {!loading && !error && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {activeTab === 'people' && characters.map((character) => (
-              <CharacterCard key={character.url} character={character} />
-            ))}
-            {activeTab === 'planets' && planets.map((planet) => (
-              <PlanetCard key={planet.url} planet={planet} />
-            ))}
-            {activeTab === 'films' && films.map((film) => (
-              <FilmCard key={film.url} film={film} />
-            ))}
-            {activeTab === 'starships' && starships.map((starship) => (
-              <StarshipCard key={starship.url} starship={starship} />
-            ))}
+        {/* Main Content */}
+        <main className="container mx-auto px-4 py-8">
+          {/* Search Bar (hidden for films) */}
+          {activeTab !== 'films' && (
+            <SearchBar
+              value={searchQuery}
+              onChange={setSearchQuery}
+              placeholder={`Search ${tabs.find(t => t.id === activeTab)?.label.toLowerCase()}...`}
+            />
+          )}
+
+          {/* Loading State */}
+          {loading && <Loader />}
+
+          {/* Error State */}
+          {error && !loading && (
+            <div className="text-center py-16">
+              <div className="inline-block p-8 bg-red-900/20 border-2 border-red-500/50 rounded-lg">
+                <p className="text-red-400 text-lg mb-4">⚠️ {error}</p>
+                <button
+                  onClick={fetchData}
+                  className="px-6 py-3 bg-[#FFE81F] text-gray-900 font-bold rounded-lg hover:bg-[#FFE81F]/90 transition-all duration-300 shadow-lg hover:shadow-[#FFE81F]/50"
+                >
+                  Try Again
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Content Grid */}
+          {!loading && !error && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-fadeIn">
+              {activeTab === 'people' && characters.map((character) => (
+                <CharacterCard key={character.url} character={character} />
+              ))}
+              {activeTab === 'planets' && planets.map((planet) => (
+                <PlanetCard key={planet.url} planet={planet} />
+              ))}
+              {activeTab === 'films' && films.map((film) => (
+                <FilmCard key={film.url} film={film} />
+              ))}
+              {activeTab === 'starships' && starships.map((starship) => (
+                <StarshipCard key={starship.url} starship={starship} />
+              ))}
+            </div>
+          )}
+
+          {/* Empty State */}
+          {!loading && !error && (
+            <>
+              {activeTab === 'people' && characters.length === 0 && (
+                <div className="text-center text-gray-400 py-16">
+                  <div className="text-6xl mb-4">🔍</div>
+                  <p className="text-lg">No characters found</p>
+                </div>
+              )}
+              {activeTab === 'planets' && planets.length === 0 && (
+                <div className="text-center text-gray-400 py-16">
+                  <div className="text-6xl mb-4">🪐</div>
+                  <p className="text-lg">No planets found</p>
+                </div>
+              )}
+              {activeTab === 'films' && films.length === 0 && (
+                <div className="text-center text-gray-400 py-16">
+                  <div className="text-6xl mb-4">🎬</div>
+                  <p className="text-lg">No films found</p>
+                </div>
+              )}
+              {activeTab === 'starships' && starships.length === 0 && (
+                <div className="text-center text-gray-400 py-16">
+                  <div className="text-6xl mb-4">🚀</div>
+                  <p className="text-lg">No starships found</p>
+                </div>
+              )}
+            </>
+          )}
+        </main>
+
+        {/* Footer with improved styling */}
+        <footer className="bg-gray-900/90 border-t border-gray-700/50 mt-16 backdrop-blur-sm">
+          <div className="container mx-auto px-4 py-8 text-center">
+            <div className="crawl-divider mb-4 mx-auto max-w-xs"></div>
+            <p className="text-gray-400 text-sm mb-2">
+              Data from <a href="https://swapi.dev" target="_blank" rel="noopener noreferrer" className="text-[#FFE81F] hover:text-[#FFE81F]/80 transition-colors">SWAPI</a>
+            </p>
+            <p className="text-gray-500 text-xs">
+              Built with React + Vite + Tailwind CSS • May the Force be with you
+            </p>
           </div>
-        )}
-
-        {/* Empty State */}
-        {!loading && !error && (
-          <>
-            {activeTab === 'people' && characters.length === 0 && (
-              <p className="text-center text-gray-400 py-12">No characters found</p>
-            )}
-            {activeTab === 'planets' && planets.length === 0 && (
-              <p className="text-center text-gray-400 py-12">No planets found</p>
-            )}
-            {activeTab === 'films' && films.length === 0 && (
-              <p className="text-center text-gray-400 py-12">No films found</p>
-            )}
-            {activeTab === 'starships' && starships.length === 0 && (
-              <p className="text-center text-gray-400 py-12">No starships found</p>
-            )}
-          </>
-        )}
-      </main>
-
-      {/* Footer */}
-      <footer className="bg-gray-800 border-t border-gray-700 mt-12">
-        <div className="container mx-auto px-4 py-6 text-center text-gray-400 text-sm">
-          <p>Data from <a href="https://swapi.dev" target="_blank" rel="noopener noreferrer" className="text-yellow-500 hover:underline">SWAPI</a></p>
-          <p className="mt-1">Built with React + Vite + Tailwind CSS</p>
-        </div>
-      </footer>
+        </footer>
+      </div>
     </div>
   );
 }
