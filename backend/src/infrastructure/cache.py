@@ -73,7 +73,7 @@ def cached(ttl: int | None = None) -> Callable[[Callable[..., Any]], Callable[..
             cache_args = args
             if args and hasattr(args[0], func.__name__):
                 cache_args = args[1:]
-            
+
             cache_key = f"{func.__name__}:{str(cache_args)}:{str(kwargs)}"
 
             cached_value = _cache.get(cache_key)
