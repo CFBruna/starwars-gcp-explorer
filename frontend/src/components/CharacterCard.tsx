@@ -6,8 +6,8 @@ interface CharacterCardProps {
 
 export default function CharacterCard({ character }: CharacterCardProps) {
     return (
-        <div className="bg-gray-800 rounded-lg p-6 border-2 border-gray-700 hover:border-yellow-500 transition-all shadow-lg">
-            <h3 className="text-2xl font-bold text-yellow-500 mb-4">{character.name}</h3>
+        <div className="card-glow bg-gray-900/80 backdrop-blur-sm rounded-lg p-6 border border-gray-700/50 shadow-xl">
+            <h3 className="text-2xl font-bold text-[#FFE81F] mb-4">{character.name}</h3>
 
             <div className="grid grid-cols-2 gap-3 text-sm">
                 <div>

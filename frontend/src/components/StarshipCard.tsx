@@ -6,8 +6,8 @@ interface StarshipCardProps {
 
 export default function StarshipCard({ starship }: StarshipCardProps) {
     return (
-        <div className="bg-gray-800 rounded-lg p-6 border-2 border-gray-700 hover:border-green-500 transition-all shadow-lg">
-            <h3 className="text-2xl font-bold text-green-400 mb-2">{starship.name}</h3>
+        <div className="card-glow bg-gray-900/80 backdrop-blur-sm rounded-lg p-6 border border-gray-700/50 shadow-xl">
+            <h3 className="text-2xl font-bold text-[#4A9EFF] mb-2">{starship.name}</h3>
             <p className="text-gray-400 text-sm mb-4">{starship.model}</p>
 
             <div className="grid grid-cols-2 gap-3 text-sm">
