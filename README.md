@@ -126,15 +126,21 @@ pnpm test
 
 ## 📊 API Endpoints
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/api/v1/people` | GET | List Star Wars characters (filterable) |
-| `/api/v1/planets` | GET | List Star Wars planets (filterable) |
-| `/api/v1/films` | GET | List Star Wars films |
-| `/api/v1/starships` | GET | List Star Wars starships (filterable) |
-| `/health` | GET | Health check endpoint |
+| Endpoint | Method | Description | Query Params |
+|----------|--------|-------------|--------------|
+| `/api/v1/people` | GET | List Star Wars characters | `search`, `page`, `ordering` |
+| `/api/v1/planets` | GET | List Star Wars planets | `search`, `page`, `ordering` |
+| `/api/v1/films` | GET | List Star Wars films | `page` |
+| `/api/v1/starships` | GET | List Star Wars starships | `search`, `page`, `ordering` |
+| `/health` | GET | Health check endpoint | N/A (no auth) |
 
 **Authentication:** All `/api/v1/*` endpoints require `X-API-Key` header.
+
+**Ordering:** Use `?ordering=field` for ascending or `?ordering=-field` for descending order.
+- Example: `/api/v1/people?ordering=name` (A-Z)
+- Example: `/api/v1/people?ordering=-height` (tallest first)
+
+**Common fields:** `name`, `height`, `mass`, `climate`, `population`, etc.
 
 ## 🚀 Deployment
 

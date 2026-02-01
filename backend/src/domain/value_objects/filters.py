@@ -6,6 +6,7 @@ from typing import Any
 class SearchFilters:
     search: str | None = None
     page: int = 1
+    ordering: str | None = None
 
     def to_query_params(self) -> dict[str, Any]:
         params: dict[str, Any] = {"page": self.page}
