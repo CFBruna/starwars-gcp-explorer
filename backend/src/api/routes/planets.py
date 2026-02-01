@@ -18,11 +18,25 @@ async def get_planets(
     request: Request,
     search: str | None = Query(None, description="Search planets by name"),
     page: int = Query(1, ge=1, description="Page number"),
+    ordering: str | None = Query(
+        None, description="Order by field (name, climate, population). Prefix with - for descending"
+    ),
     client: SwapiHttpClient = Depends(get_swapi_client),
     _: None = Depends(verify_api_key),
 ) -> Any:
-    """Get Star Wars planets with optional search filter"""
-    filters = SearchFilters(search=search, page=page)
+    """Get Star Wars planets with optional search filter and ordering"""
+    filters = SearchFilters(search=search, page=page, ordering=ordering)
     use_case = GetPlanets(client)
-    planets = await use_case.execute(filters)
-    return planets
+    result = await use_case.execute(filters)
+
+    if ordering and isinstance(result, dict) and "results" in result:
+        reverse = ordering.startswith("-")
+        field = ordering.lstrip("-")
+        try:
+            result["results"] = sorted(
+                result["results"], key=lambda x: x.get(field, ""), reverse=reverse
+            )
+        except (KeyError, TypeError):
+            pass
+
+    return result

@@ -18,11 +18,27 @@ async def get_characters(
     request: Request,
     search: str | None = Query(None, description="Search characters by name"),
     page: int = Query(1, ge=1, description="Page number"),
+    ordering: str | None = Query(
+        None, description="Order by field (name, height, mass). Prefix with - for descending"
+    ),
     client: SwapiHttpClient = Depends(get_swapi_client),
     _: None = Depends(verify_api_key),
 ) -> Any:
-    """Get Star Wars characters with optional search filter"""
-    filters = SearchFilters(search=search, page=page)
+    """Get Star Wars characters with optional search filter and ordering"""
+    filters = SearchFilters(search=search, page=page, ordering=ordering)
     use_case = GetCharacters(client)
-    characters = await use_case.execute(filters)
-    return characters
+    result = await use_case.execute(filters)
+
+    if ordering and isinstance(result, dict) and "results" in result:
+        reverse = ordering.startswith("-")
+        field = ordering.lstrip("-")
+        try:
+            result["results"] = sorted(
+                result["results"],
+                key=lambda x: x.get(field, ""),
+                reverse=reverse
+            )
+        except (KeyError, TypeError):
+            pass
+
+    return result
