@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     CACHE_TTL_SECONDS: int = 3600
 
     RATE_LIMIT: str = "100/minute"
-    
+
     CORS_ORIGINS: str = "*"
 
     @property

@@ -3,8 +3,8 @@ from typing import Any
 import httpx
 
 from src.application.ports.swapi_client import SwapiClient
-from src.domain.value_objects.filters import SearchFilters
 from src.core.config import settings
+from src.domain.value_objects.filters import SearchFilters
 from src.infrastructure.cache import cached
 
 
