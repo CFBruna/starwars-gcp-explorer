@@ -31,10 +31,20 @@ async def get_planets(
 
     if ordering and isinstance(result, dict) and "results" in result:
         reverse = ordering.startswith("-")
-        field = ordering.lstrip("-")
+        field = ordering.lstrip("-").strip().lower()
         try:
             def sort_key(item: Any) -> Any:
                 value = getattr(item, field, None) if hasattr(item, field) else item.get(field, "")
+
+                if field in ["population", "diameter", "rotation_period", "orbital_period", "surface_water"]:
+                    if not value or str(value).lower() in ["unknown", "n/a", "none"]:
+                        return float("inf") if not reverse else float("-inf")
+                    try:
+                        clean_value = str(value).replace(",", "")
+                        return float(clean_value)
+                    except ValueError:
+                        return float("inf")
+
                 return str(value).lower() if value else ""
 
             result["results"] = sorted(result["results"], key=sort_key, reverse=reverse)
