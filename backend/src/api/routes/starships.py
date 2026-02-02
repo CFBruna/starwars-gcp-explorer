@@ -33,9 +33,17 @@ async def get_starships(
         reverse = ordering.startswith("-")
         field = ordering.lstrip("-").strip().lower()
         try:
+
             def sort_key(item: Any) -> Any:
                 value = getattr(item, field, None) if hasattr(item, field) else item.get(field, "")
-                if field in ["cost_in_credits", "length", "max_atmosphering_speed", "crew", "passengers", "cargo_capacity"]:
+                if field in [
+                    "cost_in_credits",
+                    "length",
+                    "max_atmosphering_speed",
+                    "crew",
+                    "passengers",
+                    "cargo_capacity",
+                ]:
                     if not value or str(value).lower() in ["unknown", "n/a", "none"]:
                         return float("inf") if not reverse else float("-inf")
                     try:
