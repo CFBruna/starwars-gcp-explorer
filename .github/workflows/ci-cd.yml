@@ -19,8 +19,29 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  changes:
+    name: Detect Changes
+    runs-on: ubuntu-latest
+    outputs:
+      backend: ${{ steps.filter.outputs.backend }}
+      frontend: ${{ steps.filter.outputs.frontend }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            backend:
+              - 'backend/**'
+              - '.github/workflows/**'
+            frontend:
+              - 'frontend/**'
+              - '.github/workflows/**'
+
   backend-test:
     name: Backend Test (Python)
+    needs: changes
+    if: needs.changes.outputs.backend == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -28,8 +49,8 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v2
         with:
-          version: "latest"
           enable-cache: true
+          cache-dependency-path: backend/uv.lock
 
       - name: Set up Python
         run: uv python install 3.12
@@ -52,19 +73,27 @@ jobs:
 
       - name: Run tests
         working-directory: ./backend
-        run: uv run pytest --cov --cov-report=xml
+        run: uv run pytest -n auto --cov --cov-report=xml
 
       - name: Upload coverage
         uses: codecov/codecov-action@v4
         with:
           files: ./backend/coverage.xml
           fail_ci_if_error: false
+          token: ${{ secrets.CODECOV_TOKEN }}
 
   frontend-test:
     name: Frontend Test (React)
+    needs: changes
+    if: needs.changes.outputs.frontend == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -73,14 +102,9 @@ jobs:
           cache: 'pnpm'
           cache-dependency-path: ./frontend/pnpm-lock.yaml
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 9
-
       - name: Install dependencies
         working-directory: ./frontend
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
       - name: Lint (ESLint)
         working-directory: ./frontend
