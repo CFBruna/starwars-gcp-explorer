@@ -33,12 +33,12 @@ async def get_characters(
         reverse = ordering.startswith("-")
         field = ordering.lstrip("-")
         try:
-            result["results"] = sorted(
-                result["results"],
-                key=lambda x: x.get(field, ""),
-                reverse=reverse
-            )
-        except (KeyError, TypeError):
+            def sort_key(item: Any) -> Any:
+                value = getattr(item, field, None) if hasattr(item, field) else item.get(field, "")
+                return str(value).lower() if value else ""
+
+            result["results"] = sorted(result["results"], key=sort_key, reverse=reverse)
+        except (KeyError, TypeError, AttributeError):
             pass
 
     return result
