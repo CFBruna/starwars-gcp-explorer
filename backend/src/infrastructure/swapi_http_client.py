@@ -4,18 +4,18 @@ import httpx
 
 from src.application.ports.swapi_client import SwapiClient
 from src.domain.value_objects.filters import SearchFilters
+from src.core.config import settings
 from src.infrastructure.cache import cached
 
 
 class SwapiHttpClient(SwapiClient):
     """HTTP client implementation for SWAPI using httpx"""
 
-    BASE_URL = "https://swapi.dev/api"
     TIMEOUT = 10.0
 
     def __init__(self) -> None:
         self.client = httpx.AsyncClient(
-            base_url=self.BASE_URL,
+            base_url=settings.SWAPI_BASE_URL,
             timeout=self.TIMEOUT,
             headers={"User-Agent": "StarWars-GCP-Explorer/1.0"},
         )
