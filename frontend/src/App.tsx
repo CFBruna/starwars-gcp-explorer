@@ -13,24 +13,29 @@ type Tab = 'people' | 'planets' | 'films' | 'starships';
 function App() {
   const [activeTab, setActiveTab] = useState<Tab>('people');
   const [searchQuery, setSearchQuery] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [ordering, setOrdering] = useState('');
+  const [isSortOpen, setIsSortOpen] = useState(false);
 
   const [characters, setCharacters] = useState<Character[]>([]);
   const [planets, setPlanets] = useState<Planet[]>([]);
   const [films, setFilms] = useState<Film[]>([]);
   const [starships, setStarships] = useState<Starship[]>([]);
 
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
   useEffect(() => {
     fetchData();
-  }, [activeTab, searchQuery]);
+  }, [activeTab, searchQuery, ordering]);
 
   const fetchData = async () => {
     setLoading(true);
     setError(null);
 
     try {
-      const params = searchQuery ? { search: searchQuery } : {};
+      const params: Record<string, string> = {};
+      if (searchQuery) params.search = searchQuery;
+      if (ordering) params.ordering = ordering;
 
       switch (activeTab) {
         case 'people': {
@@ -100,17 +105,18 @@ function App() {
                   onClick={() => {
                     setActiveTab(tab.id);
                     setSearchQuery('');
+                    setOrdering('name'); // Default ordering when changing tabs
                   }}
                   className={`px-8 py-4 font-semibold transition-all duration-300 whitespace-nowrap relative ${activeTab === tab.id
-                      ? 'bg-gray-800/80 text-[#FFE81F]'
-                      : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+                    ? 'bg-gray-800/80 text-[#FFE81F]'
+                    : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
                     }`}
                 >
                   {tab.label}
                   {tab.count > 0 && (
                     <span className={`ml-2 text-xs px-2 py-1 rounded-full ${activeTab === tab.id
-                        ? 'bg-[#FFE81F]/20 text-[#FFE81F]'
-                        : 'bg-gray-700/50 text-gray-400'
+                      ? 'bg-[#FFE81F]/20 text-[#FFE81F]'
+                      : 'bg-gray-700/50 text-gray-400'
                       }`}>
                       {tab.count}
                     </span>
@@ -126,13 +132,164 @@ function App() {
 
         {/* Main Content */}
         <main className="container mx-auto px-4 py-8">
-          {/* Search Bar (hidden for films) */}
+          {/* Search Bar and Ordering (hidden for films) */}
           {activeTab !== 'films' && (
-            <SearchBar
-              value={searchQuery}
-              onChange={setSearchQuery}
-              placeholder={`Search ${tabs.find(t => t.id === activeTab)?.label.toLowerCase()}...`}
-            />
+            <div className="mb-8 max-w-4xl mx-auto">
+              <div className="flex gap-4 items-stretch">
+                <div className="flex-1">
+                  <SearchBar
+                    value={searchQuery}
+                    onChange={setSearchQuery}
+                    placeholder={`Search ${tabs.find(t => t.id === activeTab)?.label.toLowerCase()}...`}
+                  />
+                </div>
+
+                {/* Ordering Dropdown */}
+                <div className="relative">
+                  {/* Sort Button Toggle */}
+                  <button
+                    onClick={() => setIsSortOpen(!isSortOpen)}
+                    className={`h-full px-6 flex items-center justify-center bg-gray-900/80 backdrop-blur-sm border rounded-lg shadow-lg transition-all ${isSortOpen ? 'border-[#FFE81F] text-[#FFE81F]' : 'border-gray-700/50 text-gray-400 hover:border-[#FFE81F]/50 hover:text-[#FFE81F]'
+                      }`}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" />
+                    </svg>
+                  </button>
+
+                  {/* Custom Dropdown Menu */}
+                  {isSortOpen && (
+                    <div className="absolute right-0 top-full mt-2 w-48 bg-gray-900/95 backdrop-blur-md border border-gray-700 rounded-lg shadow-xl z-50 overflow-hidden">
+                      <div className="py-1">
+                        <button
+                          onClick={() => { setOrdering(''); setIsSortOpen(false); }}
+                          className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${ordering === '' ? 'bg-[#FFE81F]/10 text-[#FFE81F]' : 'text-gray-300 hover:bg-white/5 hover:text-white'
+                            }`}
+                        >
+                          Default
+                        </button>
+                        <button
+                          onClick={() => { setOrdering('name'); setIsSortOpen(false); }}
+                          className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${ordering === 'name' ? 'bg-[#FFE81F]/10 text-[#FFE81F]' : 'text-gray-300 hover:bg-white/5 hover:text-white'
+                            }`}
+                        >
+                          Name A-Z
+                        </button>
+                        <button
+                          onClick={() => { setOrdering('-name'); setIsSortOpen(false); }}
+                          className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${ordering === '-name' ? 'bg-[#FFE81F]/10 text-[#FFE81F]' : 'text-gray-300 hover:bg-white/5 hover:text-white'
+                            }`}
+                        >
+                          Name Z-A
+                        </button>
+
+                        {activeTab === 'people' && (
+                          <>
+                            <div className="h-px bg-gray-700/50 my-1" />
+                            <button
+                              onClick={() => { setOrdering('height'); setIsSortOpen(false); }}
+                              className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${ordering === 'height' ? 'bg-[#FFE81F]/10 text-[#FFE81F]' : 'text-gray-300 hover:bg-white/5 hover:text-white'
+                                }`}
+                            >
+                              Height: Low
+                            </button>
+                            <button
+                              onClick={() => { setOrdering('-height'); setIsSortOpen(false); }}
+                              className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${ordering === '-height' ? 'bg-[#FFE81F]/10 text-[#FFE81F]' : 'text-gray-300 hover:bg-white/5 hover:text-white'
+                                }`}
+                            >
+                              Height: High
+                            </button>
+                            <button
+                              onClick={() => { setOrdering('mass'); setIsSortOpen(false); }}
+                              className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${ordering === 'mass' ? 'bg-[#FFE81F]/10 text-[#FFE81F]' : 'text-gray-300 hover:bg-white/5 hover:text-white'
+                                }`}
+                            >
+                              Mass: Low
+                            </button>
+                            <button
+                              onClick={() => { setOrdering('-mass'); setIsSortOpen(false); }}
+                              className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${ordering === '-mass' ? 'bg-[#FFE81F]/10 text-[#FFE81F]' : 'text-gray-300 hover:bg-white/5 hover:text-white'
+                                }`}
+                            >
+                              Mass: High
+                            </button>
+                          </>
+                        )}
+
+                        {activeTab === 'planets' && (
+                          <>
+                            <div className="h-px bg-gray-700/50 my-1" />
+                            <button
+                              onClick={() => { setOrdering('population'); setIsSortOpen(false); }}
+                              className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${ordering === 'population' ? 'bg-[#FFE81F]/10 text-[#FFE81F]' : 'text-gray-300 hover:bg-white/5 hover:text-white'
+                                }`}
+                            >
+                              Pop: Low
+                            </button>
+                            <button
+                              onClick={() => { setOrdering('-population'); setIsSortOpen(false); }}
+                              className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${ordering === '-population' ? 'bg-[#FFE81F]/10 text-[#FFE81F]' : 'text-gray-300 hover:bg-white/5 hover:text-white'
+                                }`}
+                            >
+                              Pop: High
+                            </button>
+                            <button
+                              onClick={() => { setOrdering('diameter'); setIsSortOpen(false); }}
+                              className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${ordering === 'diameter' ? 'bg-[#FFE81F]/10 text-[#FFE81F]' : 'text-gray-300 hover:bg-white/5 hover:text-white'
+                                }`}
+                            >
+                              Size: Small
+                            </button>
+                            <button
+                              onClick={() => { setOrdering('-diameter'); setIsSortOpen(false); }}
+                              className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${ordering === '-diameter' ? 'bg-[#FFE81F]/10 text-[#FFE81F]' : 'text-gray-300 hover:bg-white/5 hover:text-white'
+                                }`}
+                            >
+                              Size: Large
+                            </button>
+                          </>
+                        )}
+
+                        {activeTab === 'starships' && (
+                          <>
+                            <div className="h-px bg-gray-700/50 my-1" />
+                            <button
+                              onClick={() => { setOrdering('passengers'); setIsSortOpen(false); }}
+                              className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${ordering === 'passengers' ? 'bg-[#FFE81F]/10 text-[#FFE81F]' : 'text-gray-300 hover:bg-white/5 hover:text-white'
+                                }`}
+                            >
+                              Passengers: Low
+                            </button>
+                            <button
+                              onClick={() => { setOrdering('-passengers'); setIsSortOpen(false); }}
+                              className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${ordering === '-passengers' ? 'bg-[#FFE81F]/10 text-[#FFE81F]' : 'text-gray-300 hover:bg-white/5 hover:text-white'
+                                }`}
+                            >
+                              Passengers: High
+                            </button>
+                            <button
+                              onClick={() => { setOrdering('crew'); setIsSortOpen(false); }}
+                              className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${ordering === 'crew' ? 'bg-[#FFE81F]/10 text-[#FFE81F]' : 'text-gray-300 hover:bg-white/5 hover:text-white'
+                                }`}
+                            >
+                              Crew: Low
+                            </button>
+                            <button
+                              onClick={() => { setOrdering('-crew'); setIsSortOpen(false); }}
+                              className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${ordering === '-crew' ? 'bg-[#FFE81F]/10 text-[#FFE81F]' : 'text-gray-300 hover:bg-white/5 hover:text-white'
+                                }`}
+                            >
+                              Crew: High
+                            </button>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
           )}
 
           {/* Loading State */}
