@@ -23,7 +23,7 @@ test:
 	cd backend && ~/.local/bin/uv run pytest --cov --cov-report=term-missing
 
 test-frontend:
-	cd frontend && pnpm test
+	cd frontend && pnpm test:coverage
 
 test-all: test test-frontend
 
