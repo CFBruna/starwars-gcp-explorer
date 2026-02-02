@@ -15,11 +15,12 @@ class TestAuthentication:
     def test_request_without_api_key_returns_401(self):
         response = client.get("/api/v1/people")
         assert response.status_code == 401
-        assert response.json()["detail"] == "Invalid or missing API key"
+        assert response.json()["detail"] == "Missing API Key"
 
     def test_request_with_invalid_api_key_returns_401(self):
-        response = client.get("/api/v1/people", headers={"X-API-Key": "invalid-key"})
+        response = client.get("/api/v1/people", headers={"X-API-Key": "wrong-key"})
         assert response.status_code == 401
+        assert response.json()["detail"] == "Invalid API Key"
 
     def test_request_with_valid_api_key_returns_200(self):
         response = client.get("/api/v1/people", headers={"X-API-Key": API_KEY})
