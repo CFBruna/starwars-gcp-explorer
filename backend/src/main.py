@@ -1,5 +1,5 @@
 import logging
-from collections.abc import Callable
+from collections.abc import Awaitable, Callable
 
 from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
@@ -36,7 +36,9 @@ app.add_middleware(
 
 
 @app.middleware("http")
-async def add_security_headers(request: Request, call_next: Callable) -> Response:
+async def add_security_headers(
+    request: Request, call_next: Callable[[Request], Awaitable[Response]]
+) -> Response:
     """Add security headers to all responses"""
     response = await call_next(request)
 
