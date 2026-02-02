@@ -1,21 +1,23 @@
-name: Backend CI
+name: CI/CD Pipeline
 
 on:
   push:
     branches: [main]
     paths:
       - 'backend/**'
-      - '.github/workflows/ci-cd.yml'
+      - 'frontend/**'
+      - '.github/workflows/**'
   pull_request:
     branches: [main]
     paths:
       - 'backend/**'
-      - '.github/workflows/ci-cd.yml'
+      - 'frontend/**'
+      - '.github/workflows/**'
 
 jobs:
-  test:
+  backend-test:
+    name: Backend Test (Python)
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
 
@@ -52,3 +54,31 @@ jobs:
         with:
           files: ./backend/coverage.xml
           fail_ci_if_error: false
+
+  frontend-test:
+    name: Frontend Test (React)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
+
+      - name: Install dependencies
+        working-directory: ./frontend
+        run: pnpm install
+
+      - name: Lint (ESLint)
+        working-directory: ./frontend
+        run: pnpm lint
+
+      - name: Build Project
+        working-directory: ./frontend
+        run: pnpm build
