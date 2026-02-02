@@ -34,6 +34,7 @@ async def get_characters(
         field = ordering.lstrip("-").strip().lower()
 
         try:
+
             def sort_key(item: Any) -> Any:
                 value = getattr(item, field, None) if hasattr(item, field) else item.get(field, "")
 
@@ -45,7 +46,7 @@ async def get_characters(
                         return float(clean_value)
                     except ValueError:
                         return float("inf")
-                
+
                 return str(value).lower() if value else ""
 
             result["results"] = sorted(result["results"], key=sort_key, reverse=reverse)

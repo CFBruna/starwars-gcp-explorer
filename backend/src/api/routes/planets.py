@@ -33,10 +33,17 @@ async def get_planets(
         reverse = ordering.startswith("-")
         field = ordering.lstrip("-").strip().lower()
         try:
+
             def sort_key(item: Any) -> Any:
                 value = getattr(item, field, None) if hasattr(item, field) else item.get(field, "")
 
-                if field in ["population", "diameter", "rotation_period", "orbital_period", "surface_water"]:
+                if field in [
+                    "population",
+                    "diameter",
+                    "rotation_period",
+                    "orbital_period",
+                    "surface_water",
+                ]:
                     if not value or str(value).lower() in ["unknown", "n/a", "none"]:
                         return float("inf") if not reverse else float("-inf")
                     try:
