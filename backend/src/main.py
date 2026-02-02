@@ -1,9 +1,12 @@
+import json
 import logging
 from collections.abc import Awaitable, Callable
+from pathlib import Path
 
 from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 
@@ -48,7 +51,16 @@ async def add_security_headers(
     response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
 
     if settings.ENVIRONMENT == "production":
-        response.headers["Content-Security-Policy"] = "default-src 'self'"
+        # CSP allows: self, inline styles/scripts for React/Injection, CDN for Swagger UI
+        # Note: 'unsafe-inline' is used here to allow the runtime configuration injection script
+        response.headers["Content-Security-Policy"] = (
+            "default-src 'self'; "
+            "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; "
+            "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; "
+            "img-src 'self' data: https:; "
+            "font-src 'self' data:; "
+            "connect-src 'self' https://swapi.dev"
+        )
         response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
 
     return response
@@ -76,15 +88,66 @@ def health_check() -> JSONResponse:
     )
 
 
-@app.get("/")
-def root() -> JSONResponse:
-    """Root endpoint with API information"""
-    logger.info("Root endpoint accessed")
-    return JSONResponse(
-        content={
-            "message": settings.PROJECT_NAME,
-            "version": settings.VERSION,
-            "docs": f"{settings.API_PREFIX}/docs",
-            "health": "/health",
+# Mount static files (frontend React app assets)
+FRONTEND_DIR = Path("/app/frontend/dist")
+if FRONTEND_DIR.exists():
+    app.mount("/assets", StaticFiles(directory=FRONTEND_DIR / "assets"), name="assets")
+
+    def get_index_html() -> str:
+        """Read and inject runtime configuration into index.html"""
+        index_path = FRONTEND_DIR / "index.html"
+        if not index_path.exists():
+            return ""
+        
+        with open(index_path) as f:
+            content = f.read()
+            
+        # Inject runtime configuration from backend environment variables
+        config = {
+            "API_KEY": settings.API_KEY,
+            "BASE_URL": f"{settings.API_PREFIX}",
+            "ENVIRONMENT": settings.ENVIRONMENT
         }
-    )
+        
+        injection = f"<script>window.__ENV__ = {json.dumps(config)};</script>"
+        return content.replace("<!--__ENV_INJECTION__-->", injection)
+
+    @app.get("/", response_class=HTMLResponse)
+    def root() -> HTMLResponse | JSONResponse:
+        """Serve React frontend with injected config"""
+        logger.info("Serving frontend with runtime config")
+        content = get_index_html()
+        if content:
+            return HTMLResponse(content)
+        return JSONResponse(status_code=500, content={"error": "Frontend not found"})
+    
+    @app.get("/{full_path:path}")
+    def spa_fallback(full_path: str) -> FileResponse | HTMLResponse:
+        """SPA fallback - serve index.html for all non-API routes"""
+        # Don't intercept API, health, or static routes
+        if full_path.startswith(("api", "health", "assets")):
+            return FileResponse(FRONTEND_DIR / "index.html", status_code=404)
+        
+        file_path = FRONTEND_DIR / full_path
+        if file_path.exists() and file_path.is_file():
+            return FileResponse(file_path)
+        
+        # Default to index.html with injection for client-side routing
+        content = get_index_html()
+        if content:
+            return HTMLResponse(content)
+        return FileResponse(FRONTEND_DIR / "index.html")
+
+else:
+    @app.get("/")
+    def root() -> JSONResponse:
+        """Root endpoint with API information (frontend not built)"""
+        logger.info("Root endpoint accessed (no frontend)")
+        return JSONResponse(
+            content={
+                "message": settings.PROJECT_NAME,
+                "version": settings.VERSION,
+                "docs": f"{settings.API_PREFIX}/docs",
+                "health": "/health",
+            }
+        )
