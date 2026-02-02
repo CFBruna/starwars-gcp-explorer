@@ -98,17 +98,17 @@ if FRONTEND_DIR.exists():
         index_path = FRONTEND_DIR / "index.html"
         if not index_path.exists():
             return ""
-        
+
         with open(index_path) as f:
             content = f.read()
-            
+
         # Inject runtime configuration from backend environment variables
         config = {
             "API_KEY": settings.API_KEY,
             "BASE_URL": f"{settings.API_PREFIX}",
-            "ENVIRONMENT": settings.ENVIRONMENT
+            "ENVIRONMENT": settings.ENVIRONMENT,
         }
-        
+
         injection = f"<script>window.__ENV__ = {json.dumps(config)};</script>"
         return content.replace("<!--__ENV_INJECTION__-->", injection)
 
@@ -120,18 +120,18 @@ if FRONTEND_DIR.exists():
         if content:
             return HTMLResponse(content)
         return JSONResponse(status_code=500, content={"error": "Frontend not found"})
-    
+
     @app.get("/{full_path:path}")
     def spa_fallback(full_path: str) -> FileResponse | HTMLResponse:
         """SPA fallback - serve index.html for all non-API routes"""
         # Don't intercept API, health, or static routes
         if full_path.startswith(("api", "health", "assets")):
             return FileResponse(FRONTEND_DIR / "index.html", status_code=404)
-        
+
         file_path = FRONTEND_DIR / full_path
         if file_path.exists() and file_path.is_file():
             return FileResponse(file_path)
-        
+
         # Default to index.html with injection for client-side routing
         content = get_index_html()
         if content:
@@ -139,6 +139,7 @@ if FRONTEND_DIR.exists():
         return FileResponse(FRONTEND_DIR / "index.html")
 
 else:
+
     @app.get("/")
     def root() -> JSONResponse:
         """Root endpoint with API information (frontend not built)"""
