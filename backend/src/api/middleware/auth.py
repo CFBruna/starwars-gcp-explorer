@@ -12,7 +12,7 @@ async def verify_api_key(request: Request, api_key: str | None = None) -> None:
     """Verify API key from header"""
     if not api_key:
         api_key = request.headers.get("X-API-Key")
-    
+
     if not api_key:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
