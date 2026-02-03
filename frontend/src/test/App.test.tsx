@@ -361,7 +361,7 @@ describe('App Component - Integration Tests', () => {
             const { container } = render(<App />);
 
             await waitFor(() => {
-                const badge = container.querySelector('.bg-cyan-500');
+                const badge = container.querySelector('.bg-cyan-500.rounded-sm');
                 expect(badge).toHaveTextContent('2');
             });
         });
