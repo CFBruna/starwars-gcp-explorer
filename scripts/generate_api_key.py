@@ -3,6 +3,7 @@
 Script to generate a secure API key for production use.
 Usage: python scripts/generate_api_key.py
 """
+
 import secrets
 import string
 
@@ -10,7 +11,7 @@ import string
 def generate_api_key(length: int = 64) -> str:
     """Generate a cryptographically secure API key"""
     alphabet = string.ascii_letters + string.digits
-    return ''.join(secrets.choice(alphabet) for _ in range(length))
+    return "".join(secrets.choice(alphabet) for _ in range(length))
 
 
 if __name__ == "__main__":
@@ -23,6 +24,6 @@ if __name__ == "__main__":
     print("\nFor Cloud Run deployment:")
     print(f"export API_KEY={api_key}")
     print("\nOr set in Cloud Run:")
-    print(f"gcloud run services update starwars-api \\")
+    print("gcloud run services update starwars-api \\")
     print(f"  --update-env-vars API_KEY={api_key}")
     print("=" * 70)
