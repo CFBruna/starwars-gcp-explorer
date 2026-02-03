@@ -51,8 +51,6 @@ async def add_security_headers(
     response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
 
     if settings.ENVIRONMENT == "production":
-        # CSP allows: self, inline styles/scripts for React/Injection, CDN for Swagger UI
-        # Note: 'unsafe-inline' is used here to allow the runtime configuration injection script
         response.headers["Content-Security-Policy"] = (
             "default-src 'self'; "
             "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; "
@@ -88,7 +86,6 @@ def health_check() -> JSONResponse:
     )
 
 
-# Mount static files (frontend React app assets)
 FRONTEND_DIR = Path("/app/frontend/dist")
 if FRONTEND_DIR.exists():
     app.mount("/assets", StaticFiles(directory=FRONTEND_DIR / "assets"), name="assets")
@@ -123,15 +120,13 @@ if FRONTEND_DIR.exists():
     @app.get("/{full_path:path}")
     def spa_fallback(full_path: str) -> Response:
         """SPA fallback - serve index.html for all non-API routes"""
-        # Don't intercept API, health, or static routes
-        if full_path.startswith(("api", "health", "assets")):
+            if full_path.startswith(("api", "health", "assets")):
             return FileResponse(FRONTEND_DIR / "index.html", status_code=404)
 
         file_path = FRONTEND_DIR / full_path
         if file_path.exists() and file_path.is_file():
             return FileResponse(file_path)
 
-        # Default to index.html with injection for client-side routing
         content = get_index_html()
         if content:
             return HTMLResponse(content)
