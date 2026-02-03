@@ -1,0 +1,19 @@
+displayName: "Star Wars API - High CPU Usage"
+documentation:
+  content: "Alert when P99 CPU usage exceeds 80% for 5 minutes"
+  mimeType: "text/markdown"
+conditions:
+- displayName: "P99 CPU > 80%"
+  conditionThreshold:
+    filter: 'resource.type="cloud_run_revision" AND resource.labels.service_name="starwars-api" AND metric.type="run.googleapis.com/container/cpu/utilizations"'
+    aggregations:
+    - alignmentPeriod: 60s
+      perSeriesAligner: ALIGN_PERCENTILE_99
+      crossSeriesReducer: REDUCE_MAX
+    comparison: COMPARISON_GT
+    thresholdValue: 0.8
+    duration: 300s
+    trigger:
+      count: 1
+combiner: OR
+enabled: true
