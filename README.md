@@ -5,21 +5,25 @@
 [![React](https://img.shields.io/badge/React-19-61dafb.svg)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue.svg)](https://www.typescriptlang.org/)
 [![Coverage](https://img.shields.io/badge/Coverage-86%25-brightgreen.svg)](./backend/htmlcov/index.html)
-[![CI/CD](https://github.com/CFBruna/starwars-gcp-explorer/workflows/CI%2FCD/badge.svg)](https://github.com/CFBruna/starwars-gcp-explorer/actions)
+[![CI/CD](https://github.com/CFBruna/starwars-gcp-explorer/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/CFBruna/starwars-gcp-explorer/actions)
+
+> 🚀 **Production Live Demo:** [api.brunadev.com](https://api.brunadev.com)  
+> 📖 **API Documentation:** [Swagger UI](https://api.brunadev.com/api/v1/docs) | [ReDoc](https://api.brunadev.com/api/v1/redoc)  
+> 🏥 **Health Check:** [api.brunadev.com/health](https://api.brunadev.com/health)
 
 A serverless API platform built on **Google Cloud Run** that integrates with SWAPI to deliver an interactive web experience for exploring the Star Wars universe.
 
 ## 📸 Screenshots
 
 ### Characters Explorer
-![Characters View](docs/images/characters.png)
+[![Characters View](docs/images/characters.png)](https://api.brunadev.com/)
 
 ### Planets Explorer
-![Planets View](docs/images/planets.png)
+[![Planets View](docs/images/planets.png)](https://api.brunadev.com/)
 
 ## 🏗️ Architecture
 
-![System Architecture](docs/images/architecture.png)
+[![System Architecture](docs/images/architecture.png)](docs/architecture.md)
 
 **Modular Monolith** approach combining backend API and frontend SPA in a single Cloud Run deployment. See detailed [architecture documentation](docs/architecture.md).
 
