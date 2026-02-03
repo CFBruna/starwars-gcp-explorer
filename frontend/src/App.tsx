@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import apiClient from './services/api';
 import type { Character, Planet, Film, Starship, ApiResponse } from './types';
 import SearchBar from './components/SearchBar';
@@ -24,11 +24,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    fetchData();
-  }, [activeTab, searchQuery, ordering]);
-
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setLoading(true);
     setError(null);
 
@@ -65,7 +61,11 @@ function App() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [activeTab, searchQuery, ordering]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   const tabs = [
     { id: 'people' as Tab, label: 'Characters', count: characters.length },

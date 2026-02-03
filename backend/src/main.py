@@ -117,11 +117,11 @@ if FRONTEND_DIR.exists():
             return HTMLResponse(content)
         return JSONResponse(status_code=500, content={"error": "Frontend not found"})
 
-    @app.get("/{full_path:path}")
+    @app.get("/{full_path:path}", include_in_schema=False)
     def spa_fallback(full_path: str) -> Response:
         """SPA fallback - serve index.html for all non-API routes"""
-            if full_path.startswith(("api", "health", "assets")):
-            return FileResponse(FRONTEND_DIR / "index.html", status_code=404)
+        if full_path.startswith(("api", "health", "assets")):
+            return JSONResponse({"detail": "Not Found"}, status_code=404)
 
         file_path = FRONTEND_DIR / full_path
         if file_path.exists() and file_path.is_file():
