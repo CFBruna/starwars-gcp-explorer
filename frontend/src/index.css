@@ -114,4 +114,13 @@
   .border-glow {
     box-shadow: 0 0 10px currentColor;
   }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }

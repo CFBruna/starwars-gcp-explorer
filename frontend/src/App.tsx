@@ -96,12 +96,12 @@ function App() {
       <div className="relative z-10 flex flex-col min-h-screen">
         <header className="relative border-b border-white/5 pb-8 pt-12">
           <div className="container mx-auto px-4 relative z-20 text-center">
-            <h1 className="text-5xl md:text-8xl font-black tracking-tighter uppercase mb-2">
+            <h1 className="text-3xl md:text-8xl font-black tracking-tighter uppercase mb-2">
               <span className="text-transparent bg-clip-text bg-gradient-to-b from-cyan-300 to-blue-600 filter drop-shadow-[0_0_20px_rgba(0,240,255,0.3)]">
                 {activeTab === 'people' ? 'CHARACTERS' : activeTab}
               </span>
             </h1>
-            <div className="flex items-center justify-center gap-4 text-cyan-500/40 text-xs tracking-[0.5em] font-mono">
+            <div className="flex flex-wrap items-center justify-center gap-2 md:gap-4 text-cyan-500/40 text-[10px] md:text-xs tracking-widest md:tracking-[0.5em] font-mono">
               <span>SECURE_CONNECTION</span>
               <span className="animate-pulse">●</span>
               <span>DATABASE_V2.0</span>
@@ -111,7 +111,8 @@ function App() {
 
         <nav className="sticky top-4 z-40 my-8">
           <div className="container mx-auto px-4">
-            <div className="flex justify-center items-center bg-gray-900/40 backdrop-blur-xl border border-white/10 rounded-full p-1 max-w-fit mx-auto shadow-2xl">
+            {/* Mobile: Grid Layout | Desktop: Flex Centered */}
+            <div className="grid grid-cols-4 md:flex md:justify-center items-stretch md:items-center bg-gray-900/40 backdrop-blur-xl border border-white/10 rounded-xl md:rounded-full p-1 md:min-w-0 max-w-full md:max-w-fit mx-auto shadow-2xl">
               {tabs.map((tab) => (
                 <button
                   key={tab.id}
@@ -121,17 +122,24 @@ function App() {
                     setOrdering('name');
                   }}
                   className={`
-                    relative px-6 py-2 rounded-full font-mono text-xs uppercase tracking-widest transition-all duration-300
+                    relative flex flex-col md:flex-row justify-center items-center
+                    py-2 md:py-2 md:px-6 rounded-lg md:rounded-full 
+                    font-mono text-[9px] md:text-xs uppercase tracking-tight md:tracking-widest 
+                    transition-all duration-300
                     ${activeTab === tab.id
-                      ? 'bg-cyan-500/20 text-cyan-300 shadow-[0_0_20px_rgba(0,240,255,0.3)]'
+                      ? 'md:bg-cyan-500/20 text-cyan-300 md:shadow-[0_0_20px_rgba(0,240,255,0.3)] bg-transparent' // Mobile: Text only, Desktop: Pill
                       : 'text-gray-500 hover:text-white hover:bg-white/5'
                     }
                   `}
                 >
-                  <span className="relative z-10 flex items-center gap-2">
+                  <span className="relative z-10 flex flex-col md:flex-row items-center gap-1 md:gap-2">
                     {tab.label}
+                    {/* Active Indicator Line for Mobile */}
+                    {activeTab === tab.id && (
+                      <span className="md:hidden absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-8 h-[2px] bg-cyan-500 shadow-[0_0_10px_rgba(0,240,255,0.8)] rounded-full"></span>
+                    )}
                     {tab.count > 0 && (
-                      <span className={`text-[9px] px-1.5 rounded-sm ${activeTab === tab.id ? 'bg-cyan-500 text-black' : 'bg-gray-800/80'}`}>
+                      <span className={`text-[9px] px-1.5 rounded-sm hidden md:inline-flex ${activeTab === tab.id ? 'bg-cyan-500 text-black' : 'bg-gray-800/80'}`}>
                         {tab.count}
                       </span>
                     )}
@@ -373,8 +381,8 @@ function App() {
             </p>
           </div>
         </footer>
-      </div>
-    </div>
+      </div >
+    </div >
   );
 }
 
