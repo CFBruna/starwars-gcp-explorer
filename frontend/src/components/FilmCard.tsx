@@ -6,30 +6,30 @@ interface FilmCardProps {
 
 export default function FilmCard({ film }: FilmCardProps) {
     return (
-        <div className="bg-gray-800 rounded-lg p-6 border-2 border-gray-700 hover:border-purple-500 transition-all shadow-lg">
-            <div className="flex items-start justify-between mb-3">
-                <h3 className="text-2xl font-bold text-purple-400">{film.title}</h3>
-                <span className="text-yellow-500 font-bold text-lg">EP {film.episode_id}</span>
+        <div className="card-holographic rounded-lg p-6 group flex flex-col h-full">
+            <div className="flex justify-between items-start mb-4 border-b border-white/5 pb-4">
+                <h3 className="text-xl font-bold text-white tracking-wide uppercase group-hover:text-cyan-400 transition-colors flex-1 pr-4">
+                    {film.title}
+                </h3>
+                <span className="text-[10px] font-mono text-cyan-500/50 border border-cyan-500/20 px-2 py-1 rounded whitespace-nowrap">
+                    EPISODE {film.episode_id}
+                </span>
             </div>
 
-            <p className="text-gray-300 text-sm mb-4 line-clamp-3 italic">
-                {film.opening_crawl}
-            </p>
+            <div className="flex-1">
+                <p className="text-gray-400 text-xs leading-relaxed font-mono line-clamp-3 mb-4 opacity-80">
+                    "{film.opening_crawl}"
+                </p>
+            </div>
 
-            <div className="grid grid-cols-2 gap-3 text-sm border-t border-gray-700 pt-4">
-                <div>
-                    <span className="text-gray-400">Director:</span>
-                    <span className="ml-2 text-white">{film.director}</span>
+            <div className="space-y-2 font-mono text-[10px] text-gray-500 border-t border-white/5 pt-4 mt-auto">
+                <div className="flex justify-between">
+                    <span>DIRECTOR</span>
+                    <span className="text-cyan-300 text-right truncate max-w-[150px]">{film.director}</span>
                 </div>
-
-                <div>
-                    <span className="text-gray-400">Producer:</span>
-                    <span className="ml-2 text-white">{film.producer}</span>
-                </div>
-
-                <div className="col-span-2">
-                    <span className="text-gray-400">Release Date:</span>
-                    <span className="ml-2 text-white">{new Date(film.release_date).toLocaleDateString()}</span>
+                <div className="flex justify-between">
+                    <span>RELEASE DATE</span>
+                    <span className="text-white">{new Date(film.release_date).toLocaleDateString()}</span>
                 </div>
             </div>
         </div>

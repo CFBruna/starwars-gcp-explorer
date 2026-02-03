@@ -6,39 +6,47 @@ interface StarshipCardProps {
 
 export default function StarshipCard({ starship }: StarshipCardProps) {
     return (
-        <div className="card-glow bg-gray-900/80 backdrop-blur-sm rounded-lg p-6 border border-gray-700/50 shadow-xl">
-            <h3 className="text-2xl font-bold text-[#4A9EFF] mb-2">{starship.name}</h3>
-            <p className="text-gray-400 text-sm mb-4">{starship.model}</p>
+        <div className="card-holographic rounded-lg p-6 group">
+            <div className="mb-4 border-b border-white/5 pb-4">
+                <h3 className="text-lg font-bold text-white tracking-wide uppercase group-hover:text-cyan-400 transition-colors truncate">
+                    {starship.name}
+                </h3>
+                <span className="text-[10px] font-mono text-gray-500 uppercase block mt-1 truncate">
+                    {starship.model}
+                </span>
+            </div>
 
-            <div className="grid grid-cols-2 gap-3 text-sm">
-                <div>
-                    <span className="text-gray-400">Class:</span>
-                    <span className="ml-2 text-white capitalize">{starship.starship_class}</span>
+            <div className="space-y-4 font-mono text-xs">
+                {/* Class Badge */}
+                <div className="flex items-center justify-between">
+                    <span className="px-2 py-0.5 bg-cyan-900/30 text-cyan-300 rounded text-[10px] border border-cyan-500/20">
+                        {starship.starship_class}
+                    </span>
+                    <span className="text-gray-500">{starship.cost_in_credits === 'unknown' ? 'N/A' : `${starship.cost_in_credits} CR`}</span>
                 </div>
 
-                <div>
-                    <span className="text-gray-400">Manufacturer:</span>
-                    <span className="ml-2 text-white">{starship.manufacturer}</span>
+                {/* Stats Grid */}
+                <div className="grid grid-cols-2 gap-3 mt-2">
+                    <div className="bg-white/5 p-2 rounded border-l-2 border-cyan-500">
+                        <span className="block text-[9px] text-gray-500 mb-0.5">HYPERDRIVE</span>
+                        <span className="text-white font-bold">{starship.hyperdrive_rating}</span>
+                    </div>
+                    <div className="bg-white/5 p-2 rounded border-l-2 border-orange-500">
+                        <span className="block text-[9px] text-gray-500 mb-0.5">MGLT</span>
+                        <span className="text-white font-bold">{starship.MGLT}</span>
+                    </div>
                 </div>
 
-                <div>
-                    <span className="text-gray-400">Crew:</span>
-                    <span className="ml-2 text-white">{starship.crew}</span>
-                </div>
-
-                <div>
-                    <span className="text-gray-400">Passengers:</span>
-                    <span className="ml-2 text-white">{starship.passengers}</span>
-                </div>
-
-                <div>
-                    <span className="text-gray-400">Hyperdrive:</span>
-                    <span className="ml-2 text-white">{starship.hyperdrive_rating}</span>
-                </div>
-
-                <div>
-                    <span className="text-gray-400">Length:</span>
-                    <span className="ml-2 text-white">{starship.length} m</span>
+                {/* Capacity */}
+                <div className="grid grid-cols-2 gap-4 text-[10px] text-gray-400 border-t border-white/5 pt-3">
+                    <div>
+                        <span>CREW: </span>
+                        <span className="text-white">{starship.crew}</span>
+                    </div>
+                    <div>
+                        <span>PASSENGERS: </span>
+                        <span className="text-white">{starship.passengers}</span>
+                    </div>
                 </div>
             </div>
         </div>

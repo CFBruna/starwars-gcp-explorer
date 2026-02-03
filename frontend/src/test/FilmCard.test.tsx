@@ -28,12 +28,12 @@ describe('FilmCard Component', () => {
 
     it('displays episode number', () => {
         render(<FilmCard film={mockFilm} />);
-        expect(screen.getByText('EP 4')).toBeInTheDocument();
+        expect(screen.getByText('EPISODE 4')).toBeInTheDocument();
     });
 
     it('displays opening crawl', () => {
         render(<FilmCard film={mockFilm} />);
-        expect(screen.getByText(/It is a period of civil war/)).toBeInTheDocument();
+        expect(screen.getByText(/"It is a period of civil war/)).toBeInTheDocument();
     });
 
     it('displays director', () => {
@@ -41,13 +41,14 @@ describe('FilmCard Component', () => {
         expect(screen.getByText('George Lucas')).toBeInTheDocument();
     });
 
-    it('displays producer', () => {
-        render(<FilmCard film={mockFilm} />);
-        expect(screen.getByText('Gary Kurtz, Rick McCallum')).toBeInTheDocument();
-    });
-
     it('displays formatted release date', () => {
         render(<FilmCard film={mockFilm} />);
         expect(screen.getByText(/1977/)).toBeInTheDocument();
+    });
+
+    it('has proper holographic styling', () => {
+        const { container } = render(<FilmCard film={mockFilm} />);
+        const card = container.firstChild;
+        expect(card).toHaveClass('card-holographic');
     });
 });
