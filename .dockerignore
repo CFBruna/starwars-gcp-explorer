@@ -1,0 +1,16 @@
+.git
+.github
+.idea
+.vscode
+.DS_Store
+**/.venv
+**/__pycache__
+**/node_modules
+**/dist
+**/.pytest_cache
+**/htmlcov
+**/.coverage
+**/.mypy_cache
+**/.ruff_cache
+frontend/dist
+backend/coverage.xml
