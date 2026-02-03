@@ -3,7 +3,7 @@ WORKDIR /app/frontend
 COPY frontend/package.json frontend/pnpm-lock.yaml* ./
 RUN npm install -g pnpm && pnpm install --frozen-lockfile || echo "Frontend not ready yet"
 COPY frontend/ ./
-RUN pnpm build || mkdir -p dist && echo "Frontend placeholder" > dist/index.html
+RUN pnpm build
 
 FROM python:3.12-slim
 
