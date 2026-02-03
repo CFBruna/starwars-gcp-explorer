@@ -6,10 +6,12 @@ repos:
         args: [--fix]
       - id: ruff-format
 
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.19.1
+  - repo: local
     hooks:
       - id: mypy
-        additional_dependencies: [pydantic, pydantic-settings]
-        args: [--config-file=backend/pyproject.toml]
+        name: mypy
+        entry: bash -c 'cd backend && export PYTHONPATH=$PYTHONPATH:$(pwd)/src && uv run mypy src'
+        language: system
+        types: [python]
         files: ^backend/src/
+        pass_filenames: false
