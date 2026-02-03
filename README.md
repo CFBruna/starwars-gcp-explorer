@@ -30,7 +30,8 @@ A serverless API platform built on **Google Cloud Run** that integrates with SWA
 ## ✨ Key Features
 
 - 🔐 **Secure:** API Key authentication + Rate limiting (100 req/min)
-- 🎨 **Modern UI:** React 19 + TypeScript + TailwindCSS dark theme
+- 🎨 **Modern UI:** React 19 + TailwindCSS with **Sci-Fi HUD** aesthetic & holographic cards
+- 🔗 **Connected Data:** Cross-referenced film appearances directly on character cards
 - 🧪 **Well-Tested:** 86% backend coverage, 92% frontend coverage
 - ⚡ **Fast:** LRU caching (1h TTL) + async HTTP
 - 🏛️ **Clean Architecture:** Domain-driven design (DDD)
