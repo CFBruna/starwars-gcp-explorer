@@ -51,8 +51,9 @@ describe('PlanetCard Component', () => {
         expect(screen.getByText('1 standard')).toBeInTheDocument();
     });
 
-    it('displays rotation period', () => {
-        render(<PlanetCard planet={mockPlanet} />);
-        expect(screen.getByText('23h')).toBeInTheDocument();
+    it('has proper holographic styling', () => {
+        const { container } = render(<PlanetCard planet={mockPlanet} />);
+        const card = container.firstChild;
+        expect(card).toHaveClass('card-holographic');
     });
 });

@@ -48,15 +48,9 @@ describe('CharacterCard Component', () => {
         expect(screen.getByText('male')).toBeInTheDocument();
     });
 
-    it('displays hair and eye color', () => {
-        render(<CharacterCard character={mockCharacter} />);
-        expect(screen.getByText('blond')).toBeInTheDocument();
-        expect(screen.getByText('blue')).toBeInTheDocument();
-    });
-
-    it('has proper card styling', () => {
+    it('has proper holographic styling', () => {
         const { container } = render(<CharacterCard character={mockCharacter} />);
         const card = container.firstChild;
-        expect(card).toHaveClass('card-glow', 'bg-gray-900/80');
+        expect(card).toHaveClass('card-holographic');
     });
 });

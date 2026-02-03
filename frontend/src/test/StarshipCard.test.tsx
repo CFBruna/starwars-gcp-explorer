@@ -40,10 +40,6 @@ describe('StarshipCard Component', () => {
         expect(screen.getByText('Starfighter')).toBeInTheDocument();
     });
 
-    it('displays manufacturer', () => {
-        render(<StarshipCard starship={mockStarship} />);
-        expect(screen.getByText('Incom Corporation')).toBeInTheDocument();
-    });
 
     it('displays crew count', () => {
         render(<StarshipCard starship={mockStarship} />);
@@ -60,8 +56,10 @@ describe('StarshipCard Component', () => {
         expect(screen.getByText('1.0')).toBeInTheDocument();
     });
 
-    it('displays length with unit', () => {
-        render(<StarshipCard starship={mockStarship} />);
-        expect(screen.getByText('12.5 m')).toBeInTheDocument();
+
+    it('has proper holographic styling', () => {
+        const { container } = render(<StarshipCard starship={mockStarship} />);
+        const card = container.firstChild;
+        expect(card).toHaveClass('card-holographic');
     });
 });

@@ -113,8 +113,8 @@ describe('App Component - Integration Tests', () => {
     describe('Initial Render', () => {
         it('renders the application title', () => {
             render(<App />);
-            expect(screen.getByText('Star Wars')).toBeInTheDocument();
-            expect(screen.getByText('Explorer')).toBeInTheDocument();
+            expect(screen.getByText('CHARACTERS')).toBeInTheDocument();
+            expect(screen.getByText('DATABASE_V2.0')).toBeInTheDocument();
         });
 
         it('renders all navigation tabs', () => {

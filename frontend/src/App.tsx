@@ -8,6 +8,7 @@ import FilmCard from './components/FilmCard';
 import StarshipCard from './components/StarshipCard';
 import Loader from './components/Loader';
 
+
 type Tab = 'people' | 'planets' | 'films' | 'starships';
 
 function App() {
@@ -75,64 +76,73 @@ function App() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#0A0E27] text-white relative overflow-hidden">
-      {/* Star field background */}
-      <div className="star-field"></div>
+    <div className="min-h-screen bg-[#0A0E17] text-white relative overflow-hidden">
+      <div className="fixed inset-0 z-0 transition-all duration-1000 ease-in-out">
+        <div className="absolute inset-0 bg-[#0A0E17]"></div>
+        <div className="star-field opacity-60"></div>
 
-      {/* Content wrapper with z-index */}
-      <div className="relative z-10">
-        {/* Header with gradient */}
-        <header className="bg-gradient-to-b from-gray-900/95 to-gray-800/95 border-b border-gray-700/50 shadow-2xl backdrop-blur-sm">
-          <div className="container mx-auto px-4 py-8">
-            <h1 className="text-5xl font-bold text-center mb-2">
-              <span className="text-[#FFE81F] text-glow-sm">Star Wars</span>
-              <span className="text-white ml-3">Explorer</span>
+        <div
+          key={activeTab} // Key forces re-render for fade effect
+          className="absolute inset-0 bg-cover bg-center transition-opacity duration-1000 opacity-25 mix-blend-screen scale-105"
+          style={{
+            backgroundImage: `url('/assets/images/category-${activeTab === 'people' ? 'characters' : activeTab}.webp')`
+          }}
+        ></div>
+
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0A0E17] via-[#0A0E17]/90 to-[#0A0E17]/60"></div>
+        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "url('/assets/images/grid-pattern.png')" }}></div>
+      </div>
+
+      <div className="relative z-10 flex flex-col min-h-screen">
+        <header className="relative border-b border-white/5 pb-8 pt-12">
+          <div className="container mx-auto px-4 relative z-20 text-center">
+            <h1 className="text-5xl md:text-8xl font-black tracking-tighter uppercase mb-2">
+              <span className="text-transparent bg-clip-text bg-gradient-to-b from-cyan-300 to-blue-600 filter drop-shadow-[0_0_20px_rgba(0,240,255,0.3)]">
+                {activeTab === 'people' ? 'CHARACTERS' : activeTab}
+              </span>
             </h1>
-            <p className="text-center text-gray-300 text-sm tracking-wider">
-              EXPLORE THE GALAXY FAR, FAR AWAY
-            </p>
-            <div className="crawl-divider mt-4 mx-auto max-w-md"></div>
+            <div className="flex items-center justify-center gap-4 text-cyan-500/40 text-xs tracking-[0.5em] font-mono">
+              <span>SECURE_CONNECTION</span>
+              <span className="animate-pulse">●</span>
+              <span>DATABASE_V2.0</span>
+            </div>
           </div>
         </header>
 
-        {/* Tabs with improved styling */}
-        <nav className="bg-gray-900/90 border-b border-gray-700/50 backdrop-blur-sm">
+        <nav className="sticky top-4 z-40 my-8">
           <div className="container mx-auto px-4">
-            <div className="flex space-x-1 overflow-x-auto">
+            <div className="flex justify-center items-center bg-gray-900/40 backdrop-blur-xl border border-white/10 rounded-full p-1 max-w-fit mx-auto shadow-2xl">
               {tabs.map((tab) => (
                 <button
                   key={tab.id}
                   onClick={() => {
                     setActiveTab(tab.id);
                     setSearchQuery('');
-                    setOrdering('name'); // Default ordering when changing tabs
+                    setOrdering('name');
                   }}
-                  className={`px-8 py-4 font-semibold transition-all duration-300 whitespace-nowrap relative ${activeTab === tab.id
-                    ? 'bg-gray-800/80 text-[#FFE81F]'
-                    : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
-                    }`}
+                  className={`
+                    relative px-6 py-2 rounded-full font-mono text-xs uppercase tracking-widest transition-all duration-300
+                    ${activeTab === tab.id
+                      ? 'bg-cyan-500/20 text-cyan-300 shadow-[0_0_20px_rgba(0,240,255,0.3)]'
+                      : 'text-gray-500 hover:text-white hover:bg-white/5'
+                    }
+                  `}
                 >
-                  {tab.label}
-                  {tab.count > 0 && (
-                    <span className={`ml-2 text-xs px-2 py-1 rounded-full ${activeTab === tab.id
-                      ? 'bg-[#FFE81F]/20 text-[#FFE81F]'
-                      : 'bg-gray-700/50 text-gray-400'
-                      }`}>
-                      {tab.count}
-                    </span>
-                  )}
-                  {activeTab === tab.id && (
-                    <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-[#FFE81F] to-transparent"></div>
-                  )}
+                  <span className="relative z-10 flex items-center gap-2">
+                    {tab.label}
+                    {tab.count > 0 && (
+                      <span className={`text-[9px] px-1.5 rounded-sm ${activeTab === tab.id ? 'bg-cyan-500 text-black' : 'bg-gray-800/80'}`}>
+                        {tab.count}
+                      </span>
+                    )}
+                  </span>
                 </button>
               ))}
             </div>
           </div>
         </nav>
 
-        {/* Main Content */}
-        <main className="container mx-auto px-4 py-8">
-          {/* Search Bar and Ordering (hidden for films) */}
+        <main className="container mx-auto px-4 py-8 flex-grow">
           {activeTab !== 'films' && (
             <div className="mb-8 max-w-4xl mx-auto">
               <div className="flex gap-4 items-stretch">
@@ -144,7 +154,6 @@ function App() {
                   />
                 </div>
 
-                {/* Ordering Dropdown */}
                 <div className="relative">
                   {/* Sort Button Toggle */}
                   <button
@@ -157,7 +166,6 @@ function App() {
                     </svg>
                   </button>
 
-                  {/* Custom Dropdown Menu */}
                   {isSortOpen && (
                     <div className="absolute right-0 top-full mt-2 w-48 bg-gray-900/95 backdrop-blur-md border border-gray-700 rounded-lg shadow-xl z-50 overflow-hidden">
                       <div className="py-1">
@@ -292,10 +300,7 @@ function App() {
             </div>
           )}
 
-          {/* Loading State */}
           {loading && <Loader />}
-
-          {/* Error State */}
           {error && !loading && (
             <div className="text-center py-16">
               <div className="inline-block p-8 bg-red-900/20 border-2 border-red-500/50 rounded-lg">
@@ -310,7 +315,6 @@ function App() {
             </div>
           )}
 
-          {/* Content Grid */}
           {!loading && !error && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-fadeIn">
               {activeTab === 'people' && characters.map((character) => (
@@ -328,7 +332,6 @@ function App() {
             </div>
           )}
 
-          {/* Empty State */}
           {!loading && !error && (
             <>
               {activeTab === 'people' && characters.length === 0 && (
@@ -359,7 +362,6 @@ function App() {
           )}
         </main>
 
-        {/* Footer with improved styling */}
         <footer className="bg-gray-900/90 border-t border-gray-700/50 mt-16 backdrop-blur-sm">
           <div className="container mx-auto px-4 py-8 text-center">
             <div className="crawl-divider mb-4 mx-auto max-w-xs"></div>
