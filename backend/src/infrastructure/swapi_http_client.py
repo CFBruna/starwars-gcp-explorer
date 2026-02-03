@@ -11,7 +11,7 @@ from src.infrastructure.cache import cached
 class SwapiHttpClient(SwapiClient):
     """HTTP client implementation for SWAPI using httpx"""
 
-    TIMEOUT = 10.0
+    TIMEOUT = 30.0
 
     def __init__(self) -> None:
         self.client = httpx.AsyncClient(
