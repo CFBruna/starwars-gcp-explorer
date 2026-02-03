@@ -15,5 +15,7 @@ conditions:
     duration: 300s
     trigger:
       count: 1
+notificationChannels:
+- projects/YOUR_PROJECT_ID/notificationChannels/YOUR_CHANNEL_ID
 combiner: OR
 enabled: true
