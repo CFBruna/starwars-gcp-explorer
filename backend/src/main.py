@@ -102,7 +102,6 @@ if FRONTEND_DIR.exists():
         with open(index_path) as f:
             content = f.read()
 
-        # Inject runtime configuration from backend environment variables
         config = {
             "API_KEY": settings.API_KEY,
             "BASE_URL": f"{settings.API_PREFIX}",
@@ -110,7 +109,7 @@ if FRONTEND_DIR.exists():
         }
 
         injection = f"<script>window.__ENV__ = {json.dumps(config)};</script>"
-        return content.replace("<!--__ENV_INJECTION__-->", injection)
+        return content.replace("<script>window.__ENV__ = {};</script>", injection)
 
     @app.get("/", response_class=HTMLResponse)
     def root() -> Response:
