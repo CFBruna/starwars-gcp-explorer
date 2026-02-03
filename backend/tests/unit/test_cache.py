@@ -1,7 +1,10 @@
-import time
-import pytest
 import asyncio
+import time
+
+import pytest
+
 from infrastructure.cache import LRUCache, cached, clear_cache
+
 
 class TestLRUCache:
     def test_cache_stores_and_retrieves_value(self) -> None:
