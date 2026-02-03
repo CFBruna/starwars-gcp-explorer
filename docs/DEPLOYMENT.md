@@ -91,7 +91,7 @@ gcloud run services describe starwars-api --region us-central1 --format="value(s
 **Current Settings:**
 - `API_KEY`: [Managed via Cloud Run console]
 - `ENVIRONMENT`: `production`
-- `CORS_ORIGINS`: `*` (To be restricted to production domains)
+- `CORS_ORIGINS`: `https://api.brunadev.com` (Production-only access)
 
 ## Deployment Commands
 
@@ -129,8 +129,8 @@ gcloud logging read "resource.type=cloud_run_revision AND resource.labels.servic
 ## Next Steps
 
 - [x] Custom domain SSL certificate provisioned
-- [ ] Update CORS to whitelist `https://api.brunadev.com`
-- [ ] Set up Cloud Monitoring alerts for production
+- [x] Update CORS to whitelist `https://api.brunadev.com`
+- [x] Set up Cloud Monitoring alerts for production
 
 ## Troubleshooting
 
