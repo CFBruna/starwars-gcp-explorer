@@ -23,6 +23,7 @@ const mockCharacters = {
             gender: 'male',
             homeworld: 'https://swapi.dev/api/planets/1/',
             url: 'https://swapi.dev/api/people/1/',
+            films: [],
         },
         {
             name: 'Darth Vader',
@@ -34,6 +35,7 @@ const mockCharacters = {
             gender: 'male',
             homeworld: 'https://swapi.dev/api/planets/1/',
             url: 'https://swapi.dev/api/people/4/',
+            films: [],
         },
     ],
 };
@@ -136,7 +138,10 @@ describe('App Component - Integration Tests', () => {
 
     describe('Tab Navigation', () => {
         it('switches to planets tab and fetches planets', async () => {
-            vi.mocked(apiClient.get).mockResolvedValue({ data: mockPlanets });
+            vi.mocked(apiClient.get)
+                .mockResolvedValueOnce({ data: { results: [] } }) // Initial load (people)
+                .mockResolvedValueOnce({ data: mockPlanets });    // Tab switch (planets)
+
             const user = userEvent.setup();
             render(<App />);
 
@@ -149,7 +154,10 @@ describe('App Component - Integration Tests', () => {
         });
 
         it('switches to films tab and fetches films', async () => {
-            vi.mocked(apiClient.get).mockResolvedValue({ data: mockFilms });
+            vi.mocked(apiClient.get)
+                .mockResolvedValueOnce({ data: { results: [] } }) // Initial load (people)
+                .mockResolvedValueOnce({ data: mockFilms });      // Tab switch (films)
+
             const user = userEvent.setup();
             render(<App />);
 
@@ -162,7 +170,10 @@ describe('App Component - Integration Tests', () => {
         });
 
         it('switches to starships tab and fetches starships', async () => {
-            vi.mocked(apiClient.get).mockResolvedValue({ data: mockStarships });
+            vi.mocked(apiClient.get)
+                .mockResolvedValueOnce({ data: { results: [] } }) // Initial load (people)
+                .mockResolvedValueOnce({ data: mockStarships });  // Tab switch (starships)
+
             const user = userEvent.setup();
             render(<App />);
 
