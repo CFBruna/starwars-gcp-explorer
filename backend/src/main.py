@@ -113,7 +113,7 @@ if FRONTEND_DIR.exists():
         return content.replace("<!--__ENV_INJECTION__-->", injection)
 
     @app.get("/", response_class=HTMLResponse)
-    def root() -> HTMLResponse | JSONResponse:
+    def root() -> Response:
         """Serve React frontend with injected config"""
         logger.info("Serving frontend with runtime config")
         content = get_index_html()
@@ -122,7 +122,7 @@ if FRONTEND_DIR.exists():
         return JSONResponse(status_code=500, content={"error": "Frontend not found"})
 
     @app.get("/{full_path:path}")
-    def spa_fallback(full_path: str) -> FileResponse | HTMLResponse:
+    def spa_fallback(full_path: str) -> Response:
         """SPA fallback - serve index.html for all non-API routes"""
         # Don't intercept API, health, or static routes
         if full_path.startswith(("api", "health", "assets")):
