@@ -26,7 +26,7 @@ A serverless API platform built on **Google Cloud Run** that integrates with SWA
 ## ✨ Key Features
 
 - 🔐 **Secure:** API Key authentication + Rate limiting (100 req/min)
-- 🎨 **Modern UI:** React 18 + TypeScript + TailwindCSS dark theme
+- 🎨 **Modern UI:** React 19 + TypeScript + TailwindCSS dark theme
 - 🧪 **Well-Tested:** 86% backend coverage, 92% frontend coverage
 - ⚡ **Fast:** LRU caching (1h TTL) + async HTTP
 - 🏛️ **Clean Architecture:** Domain-driven design (DDD)
@@ -204,7 +204,7 @@ See [API Examples](docs/api-examples.md) for more detailed usage.
 
 ## 🚀 Cloud Run Deployment
 
-See [Deployment Guide](docs/deployment.md) for step-by-step instructions.
+See [Deployment Guide](docs/DEPLOYMENT.md) for step-by-step instructions.
 
 **Quick deploy:**
 
@@ -248,7 +248,7 @@ starwars-gcp-explorer/
 ├── docs/                       # Documentation
 │   ├── architecture.md         # System design + Mermaid diagrams
 │   ├── api-examples.md         # cURL examples
-│   └── deployment.md           # Cloud Run deployment guide
+│   └── DEPLOYMENT.md           # Cloud Run deployment guide
 ├── scripts/
 │   └── generate_api_key.py     # Secure key generator
 ├── .github/workflows/
@@ -295,7 +295,7 @@ starwars-gcp-explorer/
 
 - [📐 Architecture & Design](docs/architecture.md) - System design, Mermaid diagrams, tech decisions
 - [📖 API Usage Examples](docs/api-examples.md) - cURL examples, common queries
-- [🚀 Deployment Guide](docs/deployment.md) - Step-by-step Cloud Run deployment
+- [🚀 Deployment Guide](docs/DEPLOYMENT.md) - Step-by-step Cloud Run deployment
 - [🧪 SWAPI Documentation](https://swapi.dev/documentation) - External API reference
 
 ## 🤝 Contributing
@@ -312,6 +312,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-**Developed by:** [Bruna Menezes](https://github.com/CFBruna) | 
-**Live Demo:** [Coming Soon on Cloud Run](#) | 
-**Portfolio:** [brunamenezes.dev](#)
+**Developed by:** [Bruna Menezes](https://github.com/CFBruna)  
+**Live Demo:** [api.brunadev.com](https://api.brunadev.com)  
+**Portfolio:** [brunadev.com](https://brunadev.com)
+
