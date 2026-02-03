@@ -18,6 +18,7 @@ class TestCharacterEntity:
             "gender": "male",
             "homeworld": "https://swapi.dev/api/planets/1/",
             "url": "https://swapi.dev/api/people/1/",
+            "films": ["https://swapi.dev/api/films/1/", "https://swapi.dev/api/films/2/"],
         }
 
         character = Character.from_swapi(swapi_data)
@@ -25,6 +26,8 @@ class TestCharacterEntity:
         assert character.name == "Luke Skywalker"
         assert character.height == "172"
         assert character.gender == "male"
+        assert len(character.films) == 2
+        assert character.films[0] == "https://swapi.dev/api/films/1/"
 
 
 class TestPlanetEntity:

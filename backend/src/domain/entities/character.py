@@ -14,6 +14,7 @@ class Character:
     gender: str
     homeworld: str
     url: str
+    films: list[str]
 
     @classmethod
     def from_swapi(cls, data: dict[str, Any]) -> "Character":
@@ -28,4 +29,5 @@ class Character:
             gender=data["gender"],
             homeworld=data["homeworld"],
             url=data["url"],
+            films=data.get("films", []),
         )

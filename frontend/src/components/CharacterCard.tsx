@@ -37,6 +37,26 @@ export default function CharacterCard({ character }: CharacterCardProps) {
                     <span className="text-gray-400">Eyes:</span>
                     <span className="ml-2 text-white">{character.eye_color}</span>
                 </div>
+
+                {character.films.length > 0 && (
+                    <div className="col-span-2 mt-2 pt-2 border-t border-gray-700">
+                        <span className="text-gray-400 block mb-1">Films:</span>
+                        <ul className="list-disc list-inside text-gray-300 text-xs">
+                            {character.films.map((film, index) => (
+                                <li key={index} className="truncate">
+                                    <a
+                                        href={film}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-blue-400 hover:text-blue-300 hover:underline"
+                                    >
+                                        Episode {film.split('/').filter(Boolean).pop()}
+                                    </a>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
             </div>
         </div>
     );
