@@ -44,7 +44,7 @@ conditions:
     trigger:
       count: 1
 notificationChannels:
-- projects/starwars-challenge-api/notificationChannels/1800841205493057946
+- projects/YOUR_PROJECT_ID/notificationChannels/YOUR_CHANNEL_ID
 combiner: OR
 enabled: true
 ```
@@ -70,7 +70,7 @@ conditions:
     trigger:
       count: 1
 notificationChannels:
-- projects/starwars-challenge-api/notificationChannels/1800841205493057946
+- projects/YOUR_PROJECT_ID/notificationChannels/YOUR_CHANNEL_ID
 combiner: OR
 enabled: true
 ```
@@ -96,7 +96,7 @@ conditions:
     trigger:
       count: 1
 notificationChannels:
-- projects/starwars-challenge-api/notificationChannels/1800841205493057946
+- projects/YOUR_PROJECT_ID/notificationChannels/YOUR_CHANNEL_ID
 combiner: OR
 enabled: true
 ```
