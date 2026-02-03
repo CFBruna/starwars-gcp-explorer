@@ -1,3 +1,5 @@
+from typing import Any
+
 import pytest
 
 from application.ports.swapi_client import SwapiClient
@@ -11,7 +13,7 @@ from domain.value_objects.filters import SearchFilters
 class MockSwapiClient(SwapiClient):
     """Mock implementation of SwapiClient for testing"""
 
-    async def get_characters(self, filters: SearchFilters) -> dict:
+    async def get_characters(self, filters: SearchFilters) -> dict[str, Any]:
         return {
             "count": 1,
             "results": [
@@ -30,7 +32,7 @@ class MockSwapiClient(SwapiClient):
             ],
         }
 
-    async def get_planets(self, filters: SearchFilters) -> dict:
+    async def get_planets(self, filters: SearchFilters) -> dict[str, Any]:
         return {
             "count": 1,
             "results": [
@@ -49,7 +51,7 @@ class MockSwapiClient(SwapiClient):
             ],
         }
 
-    async def get_films(self, filters: SearchFilters) -> dict:
+    async def get_films(self, filters: SearchFilters) -> dict[str, Any]:
         return {
             "count": 1,
             "results": [
@@ -65,7 +67,7 @@ class MockSwapiClient(SwapiClient):
             ],
         }
 
-    async def get_starships(self, filters: SearchFilters) -> dict:
+    async def get_starships(self, filters: SearchFilters) -> dict[str, Any]:
         return {
             "count": 1,
             "results": [
